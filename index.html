@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='black'/><circle cx='32' cy='32' r='12' fill='%23c6ff3d'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --lime:#c6ff3d; --on-lime:#000;
@@ -86,7 +86,7 @@ h1{font-family:var(--serif);font-weight:400;font-size:clamp(52px,8.4vw,104px);li
 .role input:focus-visible + .box{outline:2px solid var(--lime);outline-offset:3px}
 .field{position:relative;margin-bottom:12px}
 .field input{width:100%;font:inherit;font-size:17px;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:16px;padding:24px 16px 10px;transition:border-color .2s}
-.field label{position:absolute;left:17px;top:17px;font-size:16px;color:var(--muted);pointer-events:none;transition:all .2s var(--ease)}
+.field label{position:absolute;inset-inline-start:17px;top:17px;font-size:16px;color:var(--muted);pointer-events:none;transition:all .2s var(--ease)}
 .field input::placeholder{color:transparent;transition:color .2s}
 .field input:focus{outline:none;border-color:var(--fg)}
 .field input:focus::placeholder{color:var(--faint)}
@@ -117,7 +117,7 @@ kbd{font-family:var(--sans);font-size:12px;font-weight:600;min-width:22px;height
 .quiz{min-height:calc(100vh - 170px);display:flex;flex-direction:column;justify-content:center;max-width:860px;margin:0 auto;padding-top:20px}
 .counter{display:flex;align-items:baseline;gap:6px;margin-bottom:28px;color:var(--muted);font-size:14px}
 .counter b{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--fg);line-height:1}
-.tough{margin-left:10px;align-self:center;font-size:12px;font-weight:600;color:var(--on-lime);background:var(--lime);border-radius:99px;padding:3px 10px}
+.tough{margin-inline-start:10px;align-self:center;font-size:12px;font-weight:600;color:var(--on-lime);background:var(--lime);border-radius:99px;padding:3px 10px}
 .tough.sm{font-size:11px;padding:2px 8px;vertical-align:2px}
 .statement{text-wrap:pretty;font-family:var(--serif);font-weight:400;font-size:clamp(34px,5.2vw,62px);line-height:1.08;letter-spacing:-.01em;margin:0 0 56px;min-height:3.3em}
 .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -198,6 +198,32 @@ dialog p{color:var(--muted);margin:0 0 28px}
   .statement{margin-bottom:36px;min-height:0}
   .facts{gap:26px}
 }
+/* language toggle */
+.lang-btn{font-family:var(--sans);line-height:1;height:38px;border-radius:99px;border:1px solid var(--line);background:transparent;cursor:pointer;padding:0 14px;color:var(--muted);font-size:14px;transition:color .2s,border-color .2s}
+.lang-btn:hover{color:var(--fg);border-color:var(--line-strong)}
+.lang-btn .ur{font-family:var(--urdu);font-size:15px;line-height:1}
+
+/* Urdu: Nastaliq needs room to breathe */
+:root{--urdu:"Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", serif}
+html[lang="ur"] body{font-family:var(--urdu);font-size:17px;line-height:2.1}
+html[lang="ur"] h1{font-family:var(--urdu);font-size:clamp(38px,5.6vw,70px);line-height:1.75;letter-spacing:0;margin-bottom:20px}
+html[lang="ur"] .sub{font-size:17px}
+html[lang="ur"] .statement{font-family:var(--urdu);font-size:clamp(25px,3.6vw,42px);line-height:1.95;letter-spacing:0;min-height:4.2em;margin-bottom:44px}
+html[lang="ur"] .verdict,html[lang="ur"] .review-head h3,html[lang="ur"] dialog h2{font-family:var(--urdu);line-height:1.8;letter-spacing:0}
+html[lang="ur"] .verdict{font-size:clamp(34px,4.6vw,54px)}
+html[lang="ur"] .review-head h3{font-size:26px}
+html[lang="ur"] dialog h2{font-size:28px}
+html[lang="ur"] .count b.go{font-family:var(--urdu);font-style:normal;font-size:min(20vw,150px);line-height:1.8}
+html[lang="ur"] .timeup h2{font-family:var(--urdu);font-size:clamp(48px,9vw,110px);line-height:1.8}
+html[lang="ur"] .field input{font-family:var(--urdu);padding-top:28px;padding-bottom:6px}
+html[lang="ur"] .field label{top:14px}
+html[lang="ur"] .field input:focus + label,html[lang="ur"] .field input:not(:placeholder-shown) + label{top:2px;font-size:12px}
+html[lang="ur"] .ans{font-size:24px;padding:18px 28px}
+html[lang="ur"] .role .d,html[lang="ur"] .rules,html[lang="ur"] .hint{line-height:2}
+/* numbers and keys stay in Latin type */
+html[lang="ur"] .counter b,html[lang="ur"] .ring .num b,html[lang="ur"] .stats b,html[lang="ur"] .step .n,html[lang="ur"] .count b:not(.go){font-family:var(--serif)}
+html[lang="ur"] .timer,html[lang="ur"] kbd,html[lang="ur"] .mark{font-family:var(--sans);line-height:1.5}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
@@ -212,13 +238,14 @@ dialog p{color:var(--muted);margin:0 0 28px}
     <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="bgc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4"/><circle class="fgc" id="timerArc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4" stroke-dasharray="50.27" stroke-dashoffset="0"/></svg>
     <span id="timerText">3:00</span>
   </div>
+  <button class="lang-btn" id="langBtn" type="button"></button>
   <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to light mode"></button>
 </header>
 <main id="app" aria-live="polite"></main>
 
 <dialog id="dlg" aria-labelledby="dlgTitle">
   <h2 id="dlgTitle">Ready for the next person?</h2>
-  <p>This clears the result on this screen. Make sure your facilitator has seen the score first.</p>
+  <p id="dlgText">This clears the result on this screen. Make sure your facilitator has seen the score first.</p>
   <div class="dlg-actions">
     <button class="ghost" type="button" id="dlgKeep">Keep this result</button>
     <button class="cta" type="button" id="dlgClear">Clear and restart</button>
@@ -228,58 +255,165 @@ dialog p{color:var(--muted);margin:0 0 28px}
 <script>
 (function(){
   "use strict";
-  var DURATION = 180, STORE = "aiFluencyQuiz.attempt.v3", BASIC = 15, THEME = "aiFluencyQuiz.theme";
+  var DURATION = 180, BASIC = 15;
+  var STORE = "aiFluencyQuiz.attempt.v3", THEME = "aiFluencyQuiz.theme", LANGKEY = "aiFluencyQuiz.lang";
 
-  var SETS = {
-    teacher: [
-      ["Generative AI tools like ChatGPT work mainly by predicting the next word, based on patterns in their training data.", "That’s why they can sound fluent and still be wrong: they generate likely text rather than checking facts."],
-      ["If an AI gives an answer confidently, it has checked that the answer is correct.", "Confidence is just the style of the text. AI sounds equally sure when it’s wrong, so verify facts yourself."],
-      ["AI tools can invent quotes, statistics or references that look completely real.", "This is called hallucination. Always check citations and numbers before using them."],
-      ["If you tell an AI its correct answer is wrong, it will always stand by the correct answer.", "AI tends to agree with the user (sycophancy) and may back down from a correct answer."],
-      ["NotebookLM answers questions using the documents you upload to it.", "It grounds its answers in your sources and shows citations, which makes them easier to check."],
-      ["It’s fine to paste a student’s essay with their full name into a free AI tool, as long as it’s for feedback.", "Remove every identifying detail first. Assume anything you type may be stored."],
-      ["A strong prompt can include a role, a task, context, a format and constraints.", "Role, Task, Context, Format, Constraint: the more the AI knows, the more useful the result."],
-      ["Every prompt needs all five parts to work.", "A quick question often works fine. Use the full structure for bigger or more important tasks."],
-      ["Building relationships with students can be fully handed over to AI.", "Some work should always stay human, and relationships are at the top of that list."],
-      ["Drafting a classroom newsletter is a reasonable task to hand to AI, with a quick read before sending.", "Low risk and low impact: a good fit for AI, with your final check."],
-      ["AI detectors can reliably prove whether a student used AI.", "Detectors make mistakes in both directions. Design tasks that show the process instead: drafts, in-class work, oral explanation."],
-      ["The E in the CHECK method asks whether the output is free of bias and cultural assumptions.", "Correct, Human, Equitable, Curriculum-aligned, Kid-safe."],
-      ["AI knows your students, your curriculum and your community.", "You are the expert. AI only knows what you tell it, so give it context and judge the result."],
-      ["When AI helped you make a resource, it’s good practice to say so.", "Disclosing AI use is part of diligence: you take responsibility for what you share."],
-      ["Perplexity shows sources with its answers, but you should still open and check them.", "Sources make checking easier, but a source can be misread or unreliable."],
-      /* harder: always the last five */
-      ["Removing a student’s name from their essay is always enough to make it anonymous.", "Other details can still point to one child: a personal story, a medical or learning need, a unique event. Remove anything that identifies them."],
-      ["NotebookLM can still get things wrong, even when it works only from the documents you uploaded.", "It can misread or over-summarise a source. Click the citation and read the passage yourself."],
-      ["In the delegation grid, a task that is high impact and high risk if AI gets it wrong should be delegated with review.", "High impact and high risk means keep it human. Delegate with review is for high impact, low risk tasks."],
-      ["Asking AI for several different answers to the same question, then choosing between them, makes good use of how it generates text.", "The same ability that causes hallucination makes it a strong brainstorming partner, as long as you make the final call."],
-      ["In the 4 Ds, Diligence mainly means writing a clearer prompt.", "That’s Description. Diligence is taking responsibility for the result: verifying it, owning it and disclosing AI use."]
-    ],
-    student: [
-      ["AI chatbots work by predicting the next word, based on patterns in huge amounts of text.", "That’s how they write so smoothly, even when they’re wrong."],
-      ["AI understands what it says in the same way a person does.", "It produces likely text from patterns. It doesn’t understand or experience things the way you do."],
-      ["AI can sometimes make up facts that sound completely true.", "This is called hallucination. Check important facts in a textbook or a trusted website."],
-      ["If an AI sounds very sure, its answer must be correct.", "AI sounds just as confident when it’s wrong."],
-      ["AI might agree with you even when you’re wrong.", "AI tends to go along with the user, so don’t use it to prove you’re right."],
-      ["It’s fine to tell an AI chatbot your home address and phone number.", "Never share personal information like your address, phone number, passwords or photos of people."],
-      ["Asking AI to quiz you before a test is a good way to use it for learning.", "It helps you practise and find gaps, and you still do the thinking."],
-      ["Copying AI’s answers into your homework helps you learn the topic.", "If AI does the thinking, you don’t learn it, and the test will show that."],
-      ["Giving AI more detail about what you want usually gets you a better answer.", "Say who it’s for, what you need and how it should look."],
-      ["AI knows exactly what your teacher taught in class this week.", "It doesn’t know your class, so its answers may not match what you’re learning."],
-      ["You can check an AI’s facts using a textbook or a trusted website.", "Checking with another source is one of the most useful habits you can build."],
-      ["Handing in an essay written by AI as your own work is fine if nobody notices.", "It’s dishonest, and you miss the learning the task was for. Use AI to help you think, not to think for you."],
-      ["AI can explain a hard topic in a different way if you didn’t understand it in class.", "Ask it to explain simply or give an example, then check with your teacher."],
-      ["It’s safe to share a password with an AI because it isn’t a real person.", "Passwords should never be shared with anyone or anything, AI included."],
-      ["Everything AI tells you is up to date with today’s news.", "Many AI tools only learned from information up to a certain date, so recent events may be missing or wrong."],
-      /* harder: always the last five */
-      ["If two different AI chatbots give you the same answer, it must be true.", "They learn from similar text and can make the same mistake. Check with a source that isn’t AI."],
-      ["Leaving your name out of a story about yourself always makes it safe to share with AI.", "Details like your school, your street or a photo can still identify you."],
-      ["Asking an AI “Are you sure?” is a reliable way to find out whether its answer is correct.", "AI tends to go along with you, so it may change a right answer or defend a wrong one. Check another source instead."],
-      ["An AI can give a different answer if you ask it the exact same question again.", "It writes its answer fresh each time, so answers can vary. Another reason to check important facts."],
-      ["Using AI to check your work after you’ve solved a problem yourself can help you learn.", "You do the thinking first, then use AI to spot mistakes. Just remember the AI can be wrong too."]
-    ]
-  };
+  /* ================= statements ================= */
+  var SETS = { en:{}, ur:{} };
+  SETS.en.teacher = [
+    ["Generative AI tools like ChatGPT work mainly by predicting the next word, based on patterns in their training data.", "That’s why they can sound fluent and still be wrong: they generate likely text rather than checking facts."],
+    ["If an AI gives an answer confidently, it has checked that the answer is correct.", "Confidence is just the style of the text. AI sounds equally sure when it’s wrong, so verify facts yourself."],
+    ["AI tools can invent quotes, statistics or references that look completely real.", "This is called hallucination. Always check citations and numbers before using them."],
+    ["If you tell an AI its correct answer is wrong, it will always stand by the correct answer.", "AI tends to agree with the user (sycophancy) and may back down from a correct answer."],
+    ["NotebookLM answers questions using the documents you upload to it.", "It grounds its answers in your sources and shows citations, which makes them easier to check."],
+    ["It’s fine to paste a student’s essay with their full name into a free AI tool, as long as it’s for feedback.", "Remove every identifying detail first. Assume anything you type may be stored."],
+    ["A strong prompt can include a role, a task, context, a format and constraints.", "Role, Task, Context, Format, Constraint: the more the AI knows, the more useful the result."],
+    ["Every prompt needs all five parts to work.", "A quick question often works fine. Use the full structure for bigger or more important tasks."],
+    ["Building relationships with students can be fully handed over to AI.", "Some work should always stay human, and relationships are at the top of that list."],
+    ["Drafting a classroom newsletter is a reasonable task to hand to AI, with a quick read before sending.", "Low risk and low impact: a good fit for AI, with your final check."],
+    ["AI detectors can reliably prove whether a student used AI.", "Detectors make mistakes in both directions. Design tasks that show the process instead: drafts, in-class work, oral explanation."],
+    ["The E in the CHECK method asks whether the output is free of bias and cultural assumptions.", "Correct, Human, Equitable, Curriculum-aligned, Kid-safe."],
+    ["AI knows your students, your curriculum and your community.", "You are the expert. AI only knows what you tell it, so give it context and judge the result."],
+    ["When AI helped you make a resource, it’s good practice to say so.", "Disclosing AI use is part of diligence: you take responsibility for what you share."],
+    ["Perplexity shows sources with its answers, but you should still open and check them.", "Sources make checking easier, but a source can be misread or unreliable."],
+    ["Removing a student’s name from their essay is always enough to make it anonymous.", "Other details can still point to one child: a personal story, a medical or learning need, a unique event. Remove anything that identifies them."],
+    ["NotebookLM can still get things wrong, even when it works only from the documents you uploaded.", "It can misread or over-summarise a source. Click the citation and read the passage yourself."],
+    ["In the delegation grid, a task that is high impact and high risk if AI gets it wrong should be delegated with review.", "High impact and high risk means keep it human. Delegate with review is for high impact, low risk tasks."],
+    ["Asking AI for several different answers to the same question, then choosing between them, makes good use of how it generates text.", "The same ability that causes hallucination makes it a strong brainstorming partner, as long as you make the final call."],
+    ["In the 4 Ds, Diligence mainly means writing a clearer prompt.", "That’s Description. Diligence is taking responsibility for the result: verifying it, owning it and disclosing AI use."]
+  ];
+  SETS.en.student = [
+    ["AI chatbots work by predicting the next word, based on patterns in huge amounts of text.", "That’s how they write so smoothly, even when they’re wrong."],
+    ["AI understands what it says in the same way a person does.", "It produces likely text from patterns. It doesn’t understand or experience things the way you do."],
+    ["AI can sometimes make up facts that sound completely true.", "This is called hallucination. Check important facts in a textbook or a trusted website."],
+    ["If an AI sounds very sure, its answer must be correct.", "AI sounds just as confident when it’s wrong."],
+    ["AI might agree with you even when you’re wrong.", "AI tends to go along with the user, so don’t use it to prove you’re right."],
+    ["It’s fine to tell an AI chatbot your home address and phone number.", "Never share personal information like your address, phone number, passwords or photos of people."],
+    ["Asking AI to quiz you before a test is a good way to use it for learning.", "It helps you practise and find gaps, and you still do the thinking."],
+    ["Copying AI’s answers into your homework helps you learn the topic.", "If AI does the thinking, you don’t learn it, and the test will show that."],
+    ["Giving AI more detail about what you want usually gets you a better answer.", "Say who it’s for, what you need and how it should look."],
+    ["AI knows exactly what your teacher taught in class this week.", "It doesn’t know your class, so its answers may not match what you’re learning."],
+    ["You can check an AI’s facts using a textbook or a trusted website.", "Checking with another source is one of the most useful habits you can build."],
+    ["Handing in an essay written by AI as your own work is fine if nobody notices.", "It’s dishonest, and you miss the learning the task was for. Use AI to help you think, not to think for you."],
+    ["AI can explain a hard topic in a different way if you didn’t understand it in class.", "Ask it to explain simply or give an example, then check with your teacher."],
+    ["It’s safe to share a password with an AI because it isn’t a real person.", "Passwords should never be shared with anyone or anything, AI included."],
+    ["Everything AI tells you is up to date with today’s news.", "Many AI tools only learned from information up to a certain date, so recent events may be missing or wrong."],
+    ["If two different AI chatbots give you the same answer, it must be true.", "They learn from similar text and can make the same mistake. Check with a source that isn’t AI."],
+    ["Leaving your name out of a story about yourself always makes it safe to share with AI.", "Details like your school, your street or a photo can still identify you."],
+    ["Asking an AI “Are you sure?” is a reliable way to find out whether its answer is correct.", "AI tends to go along with you, so it may change a right answer or defend a wrong one. Check another source instead."],
+    ["An AI can give a different answer if you ask it the exact same question again.", "It writes its answer fresh each time, so answers can vary. Another reason to check important facts."],
+    ["Using AI to check your work after you’ve solved a problem yourself can help you learn.", "You do the thinking first, then use AI to spot mistakes. Just remember the AI can be wrong too."]
+  ];
+  SETS.ur.teacher = [
+    ["ChatGPT جیسے جنریٹو اے آئی ٹولز بنیادی طور پر اپنے تربیتی ڈیٹا کے پیٹرنز کی بنیاد پر اگلے لفظ کا اندازہ لگا کر کام کرتے ہیں۔", "اسی لیے وہ روانی سے لکھتے ہیں مگر پھر بھی غلط ہو سکتے ہیں: وہ حقائق جانچنے کے بجائے ممکنہ متن تیار کرتے ہیں۔"],
+    ["اگر اے آئی پورے اعتماد سے جواب دے تو اس کا مطلب ہے کہ اس نے جواب کی درستگی جانچ لی ہے۔", "اعتماد صرف لکھنے کا انداز ہے۔ اے آئی غلط ہوتے ہوئے بھی اتنا ہی پُراعتماد لگتا ہے، اس لیے حقائق خود جانچیں۔"],
+    ["اے آئی ٹولز ایسے اقتباسات، اعداد و شمار یا حوالے گھڑ سکتے ہیں جو بالکل اصلی لگیں۔", "اسے ہیلوسینیشن کہتے ہیں۔ حوالے اور اعداد استعمال کرنے سے پہلے ہمیشہ جانچیں۔"],
+    ["اگر آپ اے آئی سے کہیں کہ اس کا درست جواب غلط ہے، تو وہ ہمیشہ اپنے درست جواب پر قائم رہے گا۔", "اے آئی صارف سے اتفاق کرنے کی طرف مائل ہوتا ہے (سائیکوفینسی) اور درست جواب سے بھی پیچھے ہٹ سکتا ہے۔"],
+    ["NotebookLM آپ کی اپ لوڈ کی ہوئی دستاویزات کی بنیاد پر سوالوں کے جواب دیتا ہے۔", "یہ اپنے جوابات آپ کے ذرائع پر مبنی رکھتا ہے اور حوالے دکھاتا ہے، جس سے جانچ آسان ہو جاتی ہے۔"],
+    ["کسی طالب علم کا مضمون اس کے پورے نام کے ساتھ کسی مفت اے آئی ٹول میں ڈالنا ٹھیک ہے، بشرطیکہ مقصد فیڈبیک دینا ہو۔", "پہلے ہر شناختی تفصیل ہٹا دیں۔ یہ فرض کریں کہ آپ جو کچھ لکھتے ہیں وہ محفوظ کیا جا سکتا ہے۔"],
+    ["ایک مضبوط پرامپٹ میں کردار، کام، سیاق و سباق، فارمیٹ اور پابندیاں شامل ہو سکتی ہیں۔", "کردار، کام، سیاق و سباق، فارمیٹ، پابندیاں: اے آئی جتنا زیادہ جانتا ہے، نتیجہ اتنا ہی مفید ہوتا ہے۔"],
+    ["ہر پرامپٹ کے کام کرنے کے لیے پانچوں حصے ضروری ہیں۔", "ایک سادہ سوال اکثر کافی ہوتا ہے۔ مکمل ڈھانچہ بڑے یا اہم کاموں کے لیے استعمال کریں۔"],
+    ["طلبہ کے ساتھ تعلق بنانے کا کام مکمل طور پر اے آئی کے سپرد کیا جا سکتا ہے۔", "کچھ کام ہمیشہ انسان ہی کو کرنے چاہییں، اور تعلقات اس فہرست میں سرِفہرست ہیں۔"],
+    ["کلاس کا نیوز لیٹر تیار کرنا ایسا کام ہے جو اے آئی کو دیا جا سکتا ہے، بشرطیکہ بھیجنے سے پہلے ایک نظر دیکھ لیا جائے۔", "کم خطرہ اور کم اثر: اے آئی کے لیے موزوں کام، آپ کی آخری جانچ کے ساتھ۔"],
+    ["اے آئی ڈیٹیکٹرز یقینی طور پر ثابت کر سکتے ہیں کہ کسی طالب علم نے اے آئی استعمال کیا ہے یا نہیں۔", "ڈیٹیکٹرز دونوں طرف غلطیاں کرتے ہیں۔ اس کے بجائے ایسے کام دیں جن میں عمل نظر آئے: مسودے، کلاس میں لکھائی، زبانی وضاحت۔"],
+    ["CHECK طریقے میں E یہ پوچھتا ہے کہ کیا نتیجہ تعصب اور ثقافتی مفروضوں سے پاک ہے۔", "Correct (درست)، Human (انسانی)، Equitable (منصفانہ)، Curriculum-aligned (نصاب کے مطابق)، Kid-safe (بچوں کے لیے محفوظ)۔"],
+    ["اے آئی آپ کے طلبہ، آپ کے نصاب اور آپ کی کمیونٹی کو جانتا ہے۔", "ماہر آپ ہیں۔ اے آئی صرف وہی جانتا ہے جو آپ اسے بتاتے ہیں، اس لیے سیاق و سباق دیں اور نتیجے کو پرکھیں۔"],
+    ["اگر کوئی تدریسی مواد بنانے میں اے آئی نے مدد کی ہو تو یہ بتا دینا اچھی روایت ہے۔", "اے آئی کے استعمال کا اعتراف Diligence (ذمہ داری) کا حصہ ہے: آپ جو شیئر کرتے ہیں اس کے ذمہ دار آپ ہیں۔"],
+    ["Perplexity اپنے جوابات کے ساتھ ذرائع دکھاتا ہے، لیکن پھر بھی آپ کو انہیں کھول کر جانچنا چاہیے۔", "ذرائع سے جانچ آسان ہوتی ہے، مگر کسی ذریعے کو غلط سمجھا جا سکتا ہے یا وہ خود ناقابلِ اعتبار ہو سکتا ہے۔"],
+    ["کسی طالب علم کے مضمون سے اس کا نام ہٹا دینا اسے گمنام بنانے کے لیے ہمیشہ کافی ہے۔", "دوسری تفصیلات بھی کسی ایک بچے کی نشاندہی کر سکتی ہیں: کوئی ذاتی واقعہ، طبی یا تعلیمی ضرورت، کوئی منفرد بات۔ ہر شناختی تفصیل ہٹائیں۔"],
+    ["NotebookLM صرف آپ کی اپ لوڈ کردہ دستاویزات سے کام کرتے ہوئے بھی غلطی کر سکتا ہے۔", "یہ کسی ذریعے کو غلط سمجھ سکتا ہے یا ضرورت سے زیادہ مختصر کر سکتا ہے۔ حوالے پر کلک کر کے اصل عبارت خود پڑھیں۔"],
+    ["ڈیلیگیشن گرڈ میں جو کام زیادہ اثر والا ہو اور جس میں اے آئی کی غلطی کا خطرہ بھی زیادہ ہو، اسے جانچ کی شرط کے ساتھ اے آئی کے سپرد کرنا چاہیے۔", "زیادہ اثر اور زیادہ خطرے کا مطلب ہے کہ کام انسان ہی کرے۔ جانچ کے ساتھ سپردگی زیادہ اثر اور کم خطرے والے کاموں کے لیے ہے۔"],
+    ["ایک ہی سوال کے کئی مختلف جوابات اے آئی سے لے کر ان میں سے انتخاب کرنا، اس کے متن بنانے کے طریقے کا اچھا استعمال ہے۔", "جو صلاحیت ہیلوسینیشن کا سبب بنتی ہے وہی اسے خیالات تلاش کرنے کا اچھا ساتھی بناتی ہے، بشرطیکہ آخری فیصلہ آپ کریں۔"],
+    ["چار Ds میں Diligence کا مطلب بنیادی طور پر بہتر پرامپٹ لکھنا ہے۔", "یہ Description ہے۔ Diligence کا مطلب نتیجے کی ذمہ داری لینا ہے: اسے جانچنا، اپنانا اور اے آئی کے استعمال کا اعتراف کرنا۔"]
+  ];
+  SETS.ur.student = [
+    ["اے آئی چیٹ بوٹس بہت بڑی مقدار میں متن کے پیٹرنز کی بنیاد پر اگلے لفظ کا اندازہ لگا کر کام کرتے ہیں۔", "اسی لیے وہ اتنی روانی سے لکھتے ہیں، چاہے غلط ہی کیوں نہ ہوں۔"],
+    ["اے آئی اپنی کہی ہوئی بات کو اسی طرح سمجھتا ہے جیسے ایک انسان سمجھتا ہے۔", "یہ پیٹرنز سے ممکنہ متن بناتا ہے۔ یہ چیزوں کو آپ کی طرح نہ سمجھتا ہے نہ محسوس کرتا ہے۔"],
+    ["اے آئی کبھی کبھی ایسے حقائق گھڑ لیتا ہے جو بالکل سچ لگتے ہیں۔", "اسے ہیلوسینیشن کہتے ہیں۔ اہم حقائق کو نصابی کتاب یا کسی معتبر ویب سائٹ سے جانچیں۔"],
+    ["اگر اے آئی بہت پُراعتماد لگے تو اس کا جواب ضرور درست ہوگا۔", "اے آئی غلط ہوتے ہوئے بھی اتنا ہی پُراعتماد لگتا ہے۔"],
+    ["ہو سکتا ہے اے آئی آپ سے اتفاق کر لے، چاہے آپ غلط ہوں۔", "اے آئی صارف کی ہاں میں ہاں ملانے کی طرف مائل ہوتا ہے، اس لیے اپنی بات درست ثابت کرنے کے لیے اسے استعمال نہ کریں۔"],
+    ["اے آئی چیٹ بوٹ کو اپنے گھر کا پتہ اور فون نمبر بتانا ٹھیک ہے۔", "ذاتی معلومات کبھی شیئر نہ کریں، جیسے پتہ، فون نمبر، پاس ورڈ یا لوگوں کی تصاویر۔"],
+    ["ٹیسٹ سے پہلے اے آئی سے اپنا کوئز لینے کو کہنا سیکھنے کا اچھا طریقہ ہے۔", "اس سے آپ مشق کرتے ہیں اور کمزوریاں پہچانتے ہیں، اور سوچنے کا کام پھر بھی آپ خود کرتے ہیں۔"],
+    ["اے آئی کے جوابات اپنے ہوم ورک میں نقل کرنے سے آپ وہ موضوع سیکھ جاتے ہیں۔", "اگر سوچنے کا کام اے آئی کرے تو آپ نہیں سیکھتے، اور یہ ٹیسٹ میں ظاہر ہو جائے گا۔"],
+    ["اے آئی کو تفصیل سے بتانا کہ آپ کو کیا چاہیے، عام طور پر بہتر جواب دلواتا ہے۔", "بتائیں کہ جواب کس کے لیے ہے، آپ کو کیا چاہیے اور وہ کیسا نظر آنا چاہیے۔"],
+    ["اے آئی بالکل جانتا ہے کہ اس ہفتے آپ کے استاد نے کلاس میں کیا پڑھایا۔", "وہ آپ کی کلاس کو نہیں جانتا، اس لیے اس کے جوابات آپ کے نصاب سے مختلف ہو سکتے ہیں۔"],
+    ["آپ اے آئی کے بتائے ہوئے حقائق کو نصابی کتاب یا کسی معتبر ویب سائٹ سے جانچ سکتے ہیں۔", "کسی دوسرے ذریعے سے جانچنا سب سے مفید عادتوں میں سے ایک ہے۔"],
+    ["اے آئی کا لکھا ہوا مضمون اپنے نام سے جمع کروانا ٹھیک ہے، اگر کسی کو پتہ نہ چلے۔", "یہ بددیانتی ہے، اور آپ وہ سیکھنے سے محروم رہ جاتے ہیں جس کے لیے کام دیا گیا تھا۔ اے آئی کو سوچنے میں مدد کے لیے استعمال کریں، اپنی جگہ سوچنے کے لیے نہیں۔"],
+    ["اگر کلاس میں کوئی مشکل موضوع سمجھ نہ آیا ہو تو اے آئی اسے کسی اور طریقے سے سمجھا سکتا ہے۔", "اس سے آسان الفاظ میں سمجھانے یا مثال دینے کو کہیں، پھر اپنے استاد سے تصدیق کریں۔"],
+    ["اے آئی کو پاس ورڈ بتانا محفوظ ہے کیونکہ وہ کوئی اصلی انسان نہیں۔", "پاس ورڈ کبھی کسی کو نہیں بتانا چاہیے، اے آئی کو بھی نہیں۔"],
+    ["اے آئی جو کچھ بتاتا ہے وہ آج کی خبروں کے مطابق بالکل تازہ ہوتا ہے۔", "بہت سے اے آئی ٹولز نے ایک خاص تاریخ تک کی معلومات سے سیکھا ہوتا ہے، اس لیے حالیہ واقعات غائب یا غلط ہو سکتے ہیں۔"],
+    ["اگر دو مختلف اے آئی چیٹ بوٹس ایک ہی جواب دیں تو وہ ضرور سچ ہوگا۔", "وہ ملتے جلتے متن سے سیکھتے ہیں اور ایک جیسی غلطی کر سکتے ہیں۔ ایسے ذریعے سے جانچیں جو اے آئی نہ ہو۔"],
+    ["اپنے بارے میں کسی کہانی سے اپنا نام نکال دینا اسے اے آئی کے ساتھ شیئر کرنے کے لیے ہمیشہ محفوظ بنا دیتا ہے۔", "آپ کے اسکول، گلی یا تصویر جیسی تفصیلات سے بھی آپ کی شناخت ہو سکتی ہے۔"],
+    ["اے آئی سے “کیا تمہیں یقین ہے؟” پوچھنا یہ جاننے کا قابلِ اعتماد طریقہ ہے کہ اس کا جواب درست ہے یا نہیں۔", "اے آئی آپ کی ہاں میں ہاں ملا سکتا ہے، اس لیے وہ درست جواب بدل بھی سکتا ہے اور غلط جواب کا دفاع بھی کر سکتا ہے۔ کسی اور ذریعے سے جانچیں۔"],
+    ["اگر آپ بالکل وہی سوال دوبارہ پوچھیں تو اے آئی مختلف جواب دے سکتا ہے۔", "یہ ہر بار نیا جواب لکھتا ہے، اس لیے جوابات بدل سکتے ہیں۔ اہم حقائق جانچنے کی یہ ایک اور وجہ ہے۔"],
+    ["کوئی سوال خود حل کرنے کے بعد اپنا کام جانچنے کے لیے اے آئی استعمال کرنا سیکھنے میں مدد دے سکتا ہے۔", "پہلے سوچنے کا کام آپ کریں، پھر غلطیاں ڈھونڈنے کے لیے اے آئی استعمال کریں۔ بس یاد رکھیں کہ اے آئی بھی غلط ہو سکتا ہے۔"]
+  ];
   var K = { teacher:"RlRGVEZUVEZURlRGRlRGVEZURlQ=", student:"VFRGRkZGRlRGVEZURlRGVEZURlQ=" };
   function key(role){ return atob(K[role]).split("").reverse().join(""); }
+
+  /* ================= interface text ================= */
+  var T = {
+    en: {
+      dir:"ltr", switchTo:"اردو", switchLabel:"اردو میں دیکھیں",
+      h1:"How fluent are you with AI?",
+      sub:"Twenty statements, three minutes. Decide whether each one is true or false, and keep something in reserve: the last five are harder. <strong>The highest score becomes your school’s AI ambassador</strong>, and if scores tie, the faster time wins.",
+      step1:"Who’s taking the quiz?", step2:"Tell us who you are",
+      teacher:"Teacher", teacherD:"Questions about AI in your classroom and your planning.",
+      student:"Student", studentD:"Questions about using AI to learn, safely and honestly.",
+      roleGroup:"I am a",
+      name:"First name", namePh:"e.g. Ayesha", cls:"Your class", clsPh:"e.g. Grade 8, Section B",
+      privacy:"First name only. Nothing you type leaves this screen.",
+      needRole:"Choose teacher or student", needName:"Add your first name", needCls:"Add your class", start:"Start the quiz",
+      r1:"No going back, so read each statement carefully.",
+      r2:"Tap an answer, or press <kbd>T</kbd> or <kbd>F</kbd> on the keyboard.",
+      r3:"It ends after the last statement or when time runs out.",
+      go:"Go", countNote:"The timer starts now. Good luck.",
+      of:function(n){ return "of " + n; }, harder:"Harder",
+      tru:"True", fal:"False",
+      timeUp:"Time’s up.", timeUpNote:"Let’s see how you did.",
+      verdicts:["Flawless.","Excellent.","Solid foundations.","A good start.","Plenty to explore."],
+      outOf:function(n){ return "out of " + n; },
+      teacherMeta:"Teacher", studentMeta:function(c){ return "Student" + (c ? ", " + c : ""); },
+      timeTaken:"time taken", ranOut:"time ran out", answered:"answered", accuracy:"accuracy",
+      notice:"Keep this screen open. Your facilitator will come round to record scores.",
+      review:"Review your answers", ansTrue:"True.", ansFalse:"False.",
+      correct:"Correct", incorrect:"Incorrect", none:"Not answered",
+      next:"Next person",
+      dlgTitle:"Ready for the next person?", dlgText:"This clears the result on this screen. Make sure your facilitator has seen the score first.",
+      dlgKeep:"Keep this result", dlgClear:"Clear and restart",
+      toLight:"Switch to light mode", toDark:"Switch to dark mode", timerLabel:"Time remaining"
+    },
+    ur: {
+      dir:"rtl", switchTo:"English", switchLabel:"View in English",
+      h1:"آپ اے آئی کو کتنی مہارت سے استعمال کرتے ہیں؟",
+      sub:"بیس بیانات، تین منٹ۔ ہر بیان کے بارے میں فیصلہ کریں کہ وہ درست ہے یا غلط۔ آخری پانچ بیانات زیادہ مشکل ہیں، اس لیے وقت بچا کر رکھیں۔ <strong>سب سے زیادہ نمبر لینے والا اپنے اسکول کا اے آئی ایمبیسیڈر بنے گا</strong>، اور اگر نمبر برابر ہوں تو کم وقت لینے والا جیتے گا۔",
+      step1:"کوئز کون دے رہا ہے؟", step2:"اپنا تعارف کروائیں",
+      teacher:"استاد", teacherD:"کلاس روم اور تدریسی منصوبہ بندی میں اے آئی کے بارے میں سوالات۔",
+      student:"طالب علم", studentD:"سیکھنے کے لیے اے آئی کو محفوظ اور دیانت داری سے استعمال کرنے کے بارے میں سوالات۔",
+      roleGroup:"میں ہوں",
+      name:"پہلا نام", namePh:"مثلاً عائشہ", cls:"آپ کی کلاس", clsPh:"مثلاً جماعت ہشتم، سیکشن بی",
+      privacy:"صرف پہلا نام۔ آپ جو کچھ لکھیں گے وہ اسی اسکرین تک محدود رہے گا۔",
+      needRole:"استاد یا طالب علم منتخب کریں", needName:"اپنا پہلا نام لکھیں", needCls:"اپنی کلاس لکھیں", start:"کوئز شروع کریں",
+      r1:"پچھلے بیان پر واپس نہیں جا سکتے، اس لیے ہر بیان غور سے پڑھیں۔",
+      r2:"جواب پر کلک کریں، یا کی بورڈ پر <kbd>T</kbd> (درست) یا <kbd>F</kbd> (غلط) دبائیں۔",
+      r3:"آخری بیان کے بعد یا وقت ختم ہونے پر کوئز ختم ہو جائے گا۔",
+      go:"شروع", countNote:"ٹائمر شروع ہو رہا ہے۔ نیک خواہشات!",
+      of:function(n){ return "/ " + n; }, harder:"مشکل",
+      tru:"درست", fal:"غلط",
+      timeUp:"وقت ختم۔", timeUpNote:"آئیے دیکھتے ہیں آپ کی کارکردگی کیسی رہی۔",
+      verdicts:["بے مثال!","بہترین!","مضبوط بنیاد۔","اچھی شروعات۔","ابھی بہت کچھ سیکھنا باقی ہے۔"],
+      outOf:function(n){ return n + " میں سے"; },
+      teacherMeta:"استاد", studentMeta:function(c){ return "طالب علم" + (c ? "، " + c : ""); },
+      timeTaken:"لگنے والا وقت", ranOut:"وقت ختم ہو گیا", answered:"جوابات دیے", accuracy:"درستگی",
+      notice:"یہ اسکرین کھلی رکھیں۔ آپ کے سہولت کار نمبر نوٹ کرنے آئیں گے۔",
+      review:"اپنے جوابات دیکھیں", ansTrue:"درست۔", ansFalse:"غلط۔",
+      correct:"درست جواب", incorrect:"غلط جواب", none:"جواب نہیں دیا",
+      next:"اگلے شخص کی باری",
+      dlgTitle:"اگلے شخص کی باری؟", dlgText:"اس سے اس اسکرین پر موجود نتیجہ مٹ جائے گا۔ پہلے یقینی بنائیں کہ سہولت کار نے آپ کا اسکور دیکھ لیا ہے۔",
+      dlgKeep:"نتیجہ رہنے دیں", dlgClear:"مٹائیں اور دوبارہ شروع کریں",
+      toLight:"روشن موڈ", toDark:"تاریک موڈ", timerLabel:"باقی وقت"
+    }
+  };
 
   var ICON = {
     sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
@@ -293,7 +427,8 @@ dialog p{color:var(--muted);margin:0 0 28px}
 
   var $ = function(id){ return document.getElementById(id); };
   var app = $("app"), timer = $("timer"), timerText = $("timerText"), timerArc = $("timerArc"), rail = $("rail");
-  var state = null, ticker = null, locked = false;
+  var state = null, ticker = null, locked = false, screen = "start", counting = false;
+  var draft = { role:null, name:"", cls:"" };   // start-screen input survives a language switch
 
   /* ---------- storage ---------- */
   function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
@@ -302,18 +437,43 @@ dialog p{color:var(--muted);margin:0 0 28px}
   function save(){ set(STORE, JSON.stringify(state)); }
   function load(){ try{ return JSON.parse(get(STORE)); }catch(e){ return null; } }
 
-  /* ---------- theme ---------- */
-  function applyTheme(t){
-    document.documentElement.setAttribute("data-theme", t);
-    var b = $("themeBtn");
-    b.innerHTML = t === "dark" ? ICON.sun : ICON.moon;
-    b.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  /* ---------- language ---------- */
+  var lang = "en";
+  try{ var qp = new URLSearchParams(location.search).get("lang"); if (qp === "ur" || qp === "en") lang = qp; else if (get(LANGKEY) === "ur") lang = "ur"; }catch(e){}
+  function t(k){ return T[lang][k]; }
+  function Q(role){ return SETS[lang][role]; }
+  function applyLang(){
+    var h = document.documentElement;
+    h.setAttribute("lang", lang); h.setAttribute("dir", t("dir"));
+    var b = $("langBtn");
+    b.innerHTML = lang === "en" ? '<span class="ur" lang="ur">اردو</span>' : 'English';
+    b.setAttribute("aria-label", t("switchLabel"));
+    $("dlgTitle").textContent = t("dlgTitle"); $("dlgText").textContent = t("dlgText");
+    $("dlgKeep").textContent = t("dlgKeep"); $("dlgClear").textContent = t("dlgClear");
+    timer.setAttribute("aria-label", t("timerLabel"));
+    applyTheme(document.documentElement.getAttribute("data-theme"));
   }
-  applyTheme(get(THEME) === "light" ? "light" : "dark");
-  $("themeBtn").addEventListener("click", function(){
-    var t = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    applyTheme(t); set(THEME, t);
+  $("langBtn").addEventListener("click", function(){
+    if (counting) return;
+    lang = lang === "en" ? "ur" : "en"; set(LANGKEY, lang); applyLang();
+    if (screen === "start") renderStart();
+    else if (screen === "quiz") renderQuestion(true);
+    else if (screen === "result") renderResult(false);
   });
+
+  /* ---------- theme ---------- */
+  function applyTheme(th){
+    document.documentElement.setAttribute("data-theme", th);
+    var b = $("themeBtn");
+    b.innerHTML = th === "dark" ? ICON.sun : ICON.moon;
+    b.setAttribute("aria-label", th === "dark" ? t("toLight") : t("toDark"));
+  }
+  $("themeBtn").addEventListener("click", function(){
+    var th = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(th); set(THEME, th);
+  });
+  applyTheme(get(THEME) === "light" ? "light" : "dark");
+  applyLang();
 
   /* ---------- helpers ---------- */
   function el(tag, attrs, kids){
@@ -331,77 +491,76 @@ dialog p{color:var(--muted);margin:0 0 28px}
   function view(node){ app.innerHTML = ""; node.classList.add("view"); app.appendChild(node); window.scrollTo(0,0); }
   function mmss(sec){ sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec/60) + ":" + String(sec%60).padStart(2,"0"); }
   function taken(ms){ var s = Math.round(ms/1000); return Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); }
-  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i]; a[i]=a[j]; a[j]=x; } return a; }
   function remaining(){ return DURATION - (Date.now() - state.startedAt)/1000; }
   function setRail(p){ rail.style.width = (p*100) + "%"; }
   function pad2(n){ return String(n).padStart(2,"0"); }
+  function reduced(){ return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches; }
 
   /* ---------- start ---------- */
   function renderStart(){
-    stopTicker(); timer.hidden = true; setRail(0);
-    var role = null;
+    screen = "start"; stopTicker(); timer.hidden = true; setRail(0);
 
     function roleCard(val, title, desc){
       return el("label", {class:"role"}, [
-        el("input", {type:"radio", name:"role", value:val, onchange:function(){ pick(val); }}),
-        el("span", {class:"box"}, [
-          el("span", {class:"t"}, [title, el("i", {"aria-hidden":"true"})]),
-          el("span", {class:"d", text:desc})
-        ])
+        el("input", {type:"radio", name:"role", value:val, checked: draft.role === val, onchange:function(){ pick(val); }}),
+        el("span", {class:"box"}, [ el("span", {class:"t"}, [title, el("i", {"aria-hidden":"true"})]), el("span", {class:"d", text:desc}) ])
       ]);
     }
-    var name = el("input", {type:"text", id:"name", autocomplete:"off", autocapitalize:"words", spellcheck:"false", maxlength:"30", placeholder:"e.g. Ayesha"});
-    var cls = el("input", {type:"text", id:"cls", autocomplete:"off", spellcheck:"false", maxlength:"24", placeholder:"e.g. Grade 8, Section B"});
-    var clsWrap = el("div", {class:"collapse"}, [el("div", null, [
-      el("div", {class:"field"}, [cls, el("label", {for:"cls", text:"Your class"})])
+    var name = el("input", {type:"text", id:"name", autocomplete:"off", autocapitalize:"words", spellcheck:"false", maxlength:"30", placeholder:t("namePh"), dir:"auto"});
+    var cls = el("input", {type:"text", id:"cls", autocomplete:"off", spellcheck:"false", maxlength:"24", placeholder:t("clsPh"), dir:"auto"});
+    name.value = draft.name; cls.value = draft.cls;
+    var clsWrap = el("div", {class:"collapse" + (draft.role === "student" ? " open" : "")}, [el("div", null, [
+      el("div", {class:"field"}, [cls, el("label", {for:"cls", text:t("cls")})])
     ])]);
-    var go = el("button", {class:"cta", type:"button", disabled:true, text:"Choose teacher or student", onclick:begin});
+    var go = el("button", {class:"cta", type:"button", onclick:begin});
 
-    function valid(){ return role && name.value.trim() && (role === "teacher" || cls.value.trim()); }
+    function valid(){ return draft.role && name.value.trim() && (draft.role === "teacher" || cls.value.trim()); }
     function check(){
+      draft.name = name.value; draft.cls = cls.value;
       go.disabled = !valid();
-      go.textContent = !role ? "Choose teacher or student" : !name.value.trim() ? "Add your first name"
-        : (role === "student" && !cls.value.trim()) ? "Add your class" : "Start the quiz";
+      go.textContent = !draft.role ? t("needRole") : !name.value.trim() ? t("needName")
+        : (draft.role === "student" && !cls.value.trim()) ? t("needCls") : t("start");
     }
-    function pick(r){ role = r; clsWrap.classList.toggle("open", r === "student"); check(); if (!name.value) name.focus(); }
+    function pick(r){ draft.role = r; clsWrap.classList.toggle("open", r === "student"); check(); if (!name.value) name.focus(); }
     [name, cls].forEach(function(i){
       i.addEventListener("input", check);
       i.addEventListener("keydown", function(e){ if (e.key === "Enter" && valid()) begin(); });
     });
+    check();
 
     function begin(){
       if (!valid()) return;
+      var role = draft.role;
       countdown(function(){
         state = {
           role: role, name: name.value.trim(), cls: role === "student" ? cls.value.trim() : "",
-          order: shuffle(SETS[role].slice(0, BASIC).map(function(_, i){ return i; }))
-            .concat(shuffle(SETS[role].slice(BASIC).map(function(_, i){ return BASIC + i; }))),
-          answers: SETS[role].map(function(){ return null; }),
+          order: shuffle(Q(role).slice(0, BASIC).map(function(_, i){ return i; }))
+            .concat(shuffle(Q(role).slice(BASIC).map(function(_, i){ return BASIC + i; }))),
+          answers: Q(role).map(function(){ return null; }),
           current: 0, startedAt: Date.now(), finishedAt: null
         };
+        draft = { role:null, name:"", cls:"" };
         save(); renderQuestion(true); startTicker();
       });
     }
 
-    var left = el("div", null, [
-      el("h1", {text:"How fluent are you with AI?"}),
-      el("p", {class:"sub", html:"Twenty statements, three minutes. Decide whether each one is true or false, and keep something in reserve: the last five are harder. <strong>The highest score becomes your school’s AI ambassador</strong>, and if scores tie, the faster time wins."})
-    ]);
+    var left = el("div", null, [ el("h1", {text:t("h1")}), el("p", {class:"sub", html:t("sub")}) ]);
     var right = el("div", {class:"card"}, [
-      el("p", {class:"step"}, [el("span", {class:"n", text:"1"}), "Who’s taking the quiz?"]),
-      el("div", {class:"roles", role:"radiogroup", "aria-label":"I am a"}, [
-        roleCard("teacher", "Teacher", "Questions about AI in your classroom and your planning."),
-        roleCard("student", "Student", "Questions about using AI to learn, safely and honestly.")
+      el("p", {class:"step"}, [el("span", {class:"n", text:"1"}), t("step1")]),
+      el("div", {class:"roles", role:"radiogroup", "aria-label":t("roleGroup")}, [
+        roleCard("teacher", t("teacher"), t("teacherD")),
+        roleCard("student", t("student"), t("studentD"))
       ]),
-      el("p", {class:"step"}, [el("span", {class:"n", text:"2"}), "Tell us who you are"]),
-      el("div", {class:"field"}, [name, el("label", {for:"name", text:"First name"})]),
+      el("p", {class:"step"}, [el("span", {class:"n", text:"2"}), t("step2")]),
+      el("div", {class:"field"}, [name, el("label", {for:"name", text:t("name")})]),
       clsWrap,
-      el("p", {class:"hint", html: ICON.lock + "<span>First name only. Nothing you type leaves this screen.</span>"}),
+      el("p", {class:"hint", html: ICON.lock + "<span>" + t("privacy") + "</span>"}),
       go,
       el("ul", {class:"rules"}, [
-        el("li", {html:'<span class="ic">'+ICON.arrow+'</span>No going back, so read each statement carefully.'}),
-        el("li", {html:'<span class="ic">'+ICON.keys+'</span><span>Tap an answer, or press <kbd>T</kbd> or <kbd>F</kbd> on the keyboard.</span>'}),
-        el("li", {html:'<span class="ic">'+ICON.clock+'</span>It ends after the last statement or when time runs out.'})
+        el("li", {html:'<span class="ic">'+ICON.arrow+'</span><span>'+t("r1")+'</span>'}),
+        el("li", {html:'<span class="ic">'+ICON.keys+'</span><span>'+t("r2")+'</span>'}),
+        el("li", {html:'<span class="ic">'+ICON.clock+'</span><span>'+t("r3")+'</span>'})
       ])
     ]);
     view(el("section", {class:"start"}, [left, right]));
@@ -409,50 +568,52 @@ dialog p{color:var(--muted);margin:0 0 28px}
 
   /* ---------- countdown ---------- */
   function countdown(done){
-    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce){ done(); return; }
+    if (reduced()){ done(); return; }
+    counting = true;
     var overlay = el("div", {class:"count", "aria-live":"assertive"});
     document.body.appendChild(overlay);
-    var seq = ["3","2","1","Go"], i = 0;
+    var seq = ["3","2","1",t("go")], i = 0;
     (function next(){
-      if (i >= seq.length){ overlay.remove(); done(); return; }
+      if (i >= seq.length){ overlay.remove(); counting = false; done(); return; }
       overlay.innerHTML = "";
-      overlay.appendChild(el("b", {class: seq[i] === "Go" ? "go" : "", text: seq[i]}));
-      overlay.appendChild(el("p", {text:"The timer starts now. Good luck."}));
-      i++; setTimeout(next, seq[i-1] === "Go" ? 650 : 850);
+      overlay.appendChild(el("b", {class: i === 3 ? "go" : "", text: seq[i]}));
+      overlay.appendChild(el("p", {text:t("countNote")}));
+      i++; setTimeout(next, i === 4 ? 650 : 850);
     })();
   }
 
   /* ---------- quiz ---------- */
   function renderQuestion(first){
-    var set = SETS[state.role], n = set.length, i = state.current, q = set[state.order[i]];
+    screen = "quiz";
+    var set = Q(state.role), n = set.length, i = state.current, idx = state.order[i], q = set[idx];
     timer.hidden = false; updateTimer(); setRail(i/n);
     var ansBtn = function(v, label){
       return el("button", {class:"ans", type:"button", "data-v":v, onclick:function(e){ answer(v, e.currentTarget); }},
         [el("span", {text:label}), el("kbd", {"aria-hidden":"true", text:v})]);
     };
     var wrap = el("section", {class:"quiz"}, [
-      el("div", {class:"counter"}, [el("b", {text:pad2(i+1)}), el("span", {text:"of " + n}), state.order[i] >= BASIC ? el("span", {class:"tough", text:"Harder"}) : null]),
+      el("div", {class:"counter"}, [el("b", {text:pad2(i+1)}), el("span", {text:t("of")(n)}), idx >= BASIC ? el("span", {class:"tough", text:t("harder")}) : null]),
       el("p", {class:"statement", id:"stmt", text:q[0]}),
-      el("div", {class:"answers"}, [ansBtn("T","True"), ansBtn("F","False")])
+      el("div", {class:"answers"}, [ansBtn("T", t("tru")), ansBtn("F", t("fal"))])
     ]);
     if (first) view(wrap);
     else { app.innerHTML = ""; wrap.classList.add("swap"); app.appendChild(wrap); }
   }
   function answer(v, btn){
-    if (!state || state.finishedAt || locked) return;
+    if (!state || state.finishedAt || locked || screen !== "quiz") return;
     locked = true;
     if (btn) btn.classList.add("picked");
     state.answers[state.order[state.current]] = v;
     state.current++; save();
-    setRail(state.current / SETS[state.role].length);
+    setRail(state.current / Q(state.role).length);
     setTimeout(function(){
       locked = false;
-      if (state.current >= SETS[state.role].length) finish(false); else renderQuestion(false);
+      if (!state || state.finishedAt) return;
+      if (state.current >= Q(state.role).length) finish(false); else renderQuestion(false);
     }, 260);
   }
   document.addEventListener("keydown", function(e){
-    if (!state || state.finishedAt || /INPUT|TEXTAREA/.test(e.target.tagName) || $("dlg").open) return;
+    if (!state || state.finishedAt || screen !== "quiz" || /INPUT|TEXTAREA/.test(e.target.tagName) || $("dlg").open) return;
     var k = e.key.toLowerCase();
     if (k === "t" || k === "f") answer(k.toUpperCase(), document.querySelector('.ans[data-v="'+k.toUpperCase()+'"]'));
   });
@@ -473,9 +634,9 @@ dialog p{color:var(--muted);margin:0 0 28px}
   function finish(timeUp){
     stopTicker();
     state.finishedAt = Math.min(Date.now(), state.startedAt + DURATION*1000);
-    save(); timer.hidden = true; setRail(1);
+    save(); timer.hidden = true; setRail(1); screen = "done";
     if (timeUp){
-      var o = el("div", {class:"timeup", role:"alert"}, [el("div", null, [el("h2", {text:"Time’s up."}), el("p", {text:"Let’s see how you did."})])]);
+      var o = el("div", {class:"timeup", role:"alert"}, [el("div", null, [el("h2", {text:t("timeUp")}), el("p", {text:t("timeUpNote")})])]);
       document.body.appendChild(o);
       setTimeout(function(){ o.remove(); renderResult(true); }, 1600);
     } else renderResult(true);
@@ -483,68 +644,64 @@ dialog p{color:var(--muted);margin:0 0 28px}
 
   /* ---------- result ---------- */
   function verdict(s, n){
-    if (s === n) return "Flawless.";
-    if (s >= n - 3) return "Excellent.";
-    if (s >= n - 6) return "Solid foundations.";
-    if (s >= n - 9) return "A good start.";
-    return "Plenty to explore.";
+    var v = t("verdicts");
+    return s === n ? v[0] : s >= n - 3 ? v[1] : s >= n - 6 ? v[2] : s >= n - 9 ? v[3] : v[4];
   }
   function renderResult(animate){
-    timer.hidden = true; setRail(1);
-    var set = SETS[state.role], ans = key(state.role), n = set.length, score = 0;
+    screen = "result"; timer.hidden = true; setRail(1);
+    var set = Q(state.role), ans = key(state.role), n = set.length, score = 0;
     set.forEach(function(_, i){ if (state.answers[i] === ans[i]) score++; });
     var answered = state.answers.filter(function(a){ return a !== null; }).length;
     var ms = state.finishedAt - state.startedAt, ranOut = ms >= DURATION*1000;
     var C = 2 * Math.PI * 92;
 
-    var ring = el("div", {class:"ring", role:"img", "aria-label": score + " out of " + n + " correct"});
+    var ring = el("div", {class:"ring", role:"img", "aria-label": score + " / " + n});
     ring.innerHTML = '<svg viewBox="0 0 200 200"><circle class="bgc" cx="100" cy="100" r="92" fill="none" stroke-width="3"/>' +
       '<circle class="fgc" cx="100" cy="100" r="92" fill="none" stroke-width="5" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'"/></svg>';
     var num = el("b", {text: animate ? "0" : String(score)});
-    ring.appendChild(el("div", {class:"num"}, [el("div", null, [num, el("span", {text:"out of " + n})])]));
+    ring.appendChild(el("div", {class:"num"}, [el("div", null, [num, el("span", {text:t("outOf")(n)})])]));
 
-    var who = state.role === "teacher" ? "Teacher" : "Student" + (state.cls ? ", " + state.cls : "");
-
+    var who = state.role === "teacher" ? t("teacherMeta") : t("studentMeta")(state.cls);
     var info = el("div", null, [
       el("p", {class:"verdict", text: verdict(score, n)}),
-      el("p", {class:"person", text: state.name}),
+      el("p", {class:"person"}, [el("bdi", {text: state.name})]),
       el("p", {class:"person-meta", text: who}),
       el("div", {class:"stats"}, [
-        el("div", null, [el("b", {text: taken(ms)}), el("span", {text: ranOut ? "time ran out" : "time taken"})]),
-        el("div", null, [el("b", {text: answered + "/" + n}), el("span", {text:"answered"})]),
-        el("div", null, [el("b", {text: Math.round(score/n*100) + "%"}), el("span", {text:"accuracy"})])
+        el("div", null, [el("b", {text: taken(ms), dir:"ltr"}), el("span", {text: ranOut ? t("ranOut") : t("timeTaken")})]),
+        el("div", null, [el("b", {text: answered + "/" + n, dir:"ltr"}), el("span", {text:t("answered")})]),
+        el("div", null, [el("b", {text: Math.round(score/n*100) + "%", dir:"ltr"}), el("span", {text:t("accuracy")})])
       ]),
-      el("p", {class:"notice"}, [el("i"), el("span", {text:"Keep this screen open. Your facilitator will come round to record scores."})])
+      el("p", {class:"notice"}, [el("i"), el("span", {text:t("notice")})])
     ]);
 
     var list = el("ol", {class:"review-list", id:"reviewList", hidden:true});
-    state.order.forEach(function(idx, k){
+    state.order.forEach(function(idx){
       var g = state.answers[idx], r = ans[idx];
       var st = g === null ? "none" : g === r ? "ok" : "no";
       list.appendChild(el("li", null, [
-        el("span", {class:"badge " + st, "aria-label": st === "ok" ? "Correct" : st === "no" ? "Incorrect" : "Not answered", text: st === "ok" ? "✓" : st === "no" ? "✕" : "–"}),
+        el("span", {class:"badge " + st, "aria-label": st === "ok" ? t("correct") : st === "no" ? t("incorrect") : t("none"), text: st === "ok" ? "✓" : st === "no" ? "✕" : "–"}),
         el("div", null, [
-          el("p", {class:"s"}, [set[idx][0], idx >= BASIC ? el("span", {class:"tough sm", text:"Harder"}) : null]),
-          el("p", {class:"a", html:""}, [el("b", {text: (r === "T" ? "True." : "False.") + " "}), set[idx][1]])
+          el("p", {class:"s"}, [set[idx][0], idx >= BASIC ? el("span", {class:"tough sm", text:t("harder")}) : null]),
+          el("p", {class:"a"}, [el("b", {text: (r === "T" ? t("ansTrue") : t("ansFalse")) + " "}), set[idx][1]])
         ])
       ]));
     });
     var toggle = el("button", {class:"review-head", type:"button", "aria-expanded":"false", "aria-controls":"reviewList", onclick:function(){
       var open = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", String(!open)); list.hidden = open;
-    }}, [el("h3", {text:"Review your answers"}), el("span", {class:"chev", html:ICON.chev})]);
+    }}, [el("h3", {text:t("review")}), el("span", {class:"chev", html:ICON.chev})]);
 
     view(el("section", null, [
       el("div", {class:"result"}, [ring, info]),
       el("div", {class:"review"}, [toggle, list]),
-      el("div", {class:"foot"}, [el("button", {class:"ghost", type:"button", text:"Next person", onclick:function(){ $("dlg").showModal(); }})])
+      el("div", {class:"foot"}, [el("button", {class:"ghost", type:"button", text:t("next"), onclick:function(){ $("dlg").showModal(); }})])
     ]));
 
     var arc = ring.querySelector(".fgc"), target = C * (1 - score/n);
-    if (animate && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)){
+    if (animate && !reduced()){
       requestAnimationFrame(function(){ requestAnimationFrame(function(){ arc.style.strokeDashoffset = target; }); });
       var t0 = performance.now(), dur = 1400;
-      (function step(t){ var p = Math.min(1, (t - t0)/dur), e = 1 - Math.pow(1 - p, 3);
+      (function step(now){ var p = Math.min(1, (now - t0)/dur), e = 1 - Math.pow(1 - p, 3);
         num.textContent = String(Math.round(score * e)); if (p < 1) requestAnimationFrame(step); })(t0);
     } else { arc.style.strokeDashoffset = target; num.textContent = String(score); }
   }
@@ -555,7 +712,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
 
   /* ---------- boot ---------- */
   state = load();
-  if (state && SETS[state.role] && Array.isArray(state.answers)){
+  if (state && SETS.en[state.role] && Array.isArray(state.answers) && state.answers.length === SETS.en[state.role].length){
     if (state.finishedAt) renderResult(false);
     else if (remaining() <= 0) finish(false);
     else { renderQuestion(true); startTicker(); }
