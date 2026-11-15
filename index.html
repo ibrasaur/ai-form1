@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AI Fluency Quiz</title>
-<meta name="description" content="A five-minute true-or-false quiz on using AI well and safely, for teachers and students.">
+<meta name="description" content="A three-minute true-or-false quiz on using AI well and safely, for teachers and students.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='black'/><circle cx='32' cy='32' r='12' fill='%23c6ff3d'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,6 +117,8 @@ kbd{font-family:var(--sans);font-size:12px;font-weight:600;min-width:22px;height
 .quiz{min-height:calc(100vh - 170px);display:flex;flex-direction:column;justify-content:center;max-width:860px;margin:0 auto;padding-top:20px}
 .counter{display:flex;align-items:baseline;gap:6px;margin-bottom:28px;color:var(--muted);font-size:14px}
 .counter b{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--fg);line-height:1}
+.tough{margin-left:10px;align-self:center;font-size:12px;font-weight:600;color:var(--on-lime);background:var(--lime);border-radius:99px;padding:3px 10px}
+.tough.sm{font-size:11px;padding:2px 8px;vertical-align:2px}
 .statement{text-wrap:pretty;font-family:var(--serif);font-weight:400;font-size:clamp(34px,5.2vw,62px);line-height:1.08;letter-spacing:-.01em;margin:0 0 56px;min-height:3.3em}
 .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .ans{position:relative;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
@@ -208,7 +210,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
   <div class="spacer"></div>
   <div class="timer" id="timer" hidden role="timer" aria-label="Time remaining">
     <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="bgc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4"/><circle class="fgc" id="timerArc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4" stroke-dasharray="50.27" stroke-dashoffset="0"/></svg>
-    <span id="timerText">5:00</span>
+    <span id="timerText">3:00</span>
   </div>
   <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to light mode"></button>
 </header>
@@ -226,7 +228,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
 <script>
 (function(){
   "use strict";
-  var DURATION = 300, STORE = "aiFluencyQuiz.attempt.v2", THEME = "aiFluencyQuiz.theme";
+  var DURATION = 180, STORE = "aiFluencyQuiz.attempt.v3", BASIC = 15, THEME = "aiFluencyQuiz.theme";
 
   var SETS = {
     teacher: [
@@ -244,7 +246,13 @@ dialog p{color:var(--muted);margin:0 0 28px}
       ["The E in the CHECK method asks whether the output is free of bias and cultural assumptions.", "Correct, Human, Equitable, Curriculum-aligned, Kid-safe."],
       ["AI knows your students, your curriculum and your community.", "You are the expert. AI only knows what you tell it, so give it context and judge the result."],
       ["When AI helped you make a resource, it’s good practice to say so.", "Disclosing AI use is part of diligence: you take responsibility for what you share."],
-      ["Perplexity shows sources with its answers, but you should still open and check them.", "Sources make checking easier, but a source can be misread or unreliable."]
+      ["Perplexity shows sources with its answers, but you should still open and check them.", "Sources make checking easier, but a source can be misread or unreliable."],
+      /* harder: always the last five */
+      ["Removing a student’s name from their essay is always enough to make it anonymous.", "Other details can still point to one child: a personal story, a medical or learning need, a unique event. Remove anything that identifies them."],
+      ["NotebookLM can still get things wrong, even when it works only from the documents you uploaded.", "It can misread or over-summarise a source. Click the citation and read the passage yourself."],
+      ["In the delegation grid, a task that is high impact and high risk if AI gets it wrong should be delegated with review.", "High impact and high risk means keep it human. Delegate with review is for high impact, low risk tasks."],
+      ["Asking AI for several different answers to the same question, then choosing between them, makes good use of how it generates text.", "The same ability that causes hallucination makes it a strong brainstorming partner, as long as you make the final call."],
+      ["In the 4 Ds, Diligence mainly means writing a clearer prompt.", "That’s Description. Diligence is taking responsibility for the result: verifying it, owning it and disclosing AI use."]
     ],
     student: [
       ["AI chatbots work by predicting the next word, based on patterns in huge amounts of text.", "That’s how they write so smoothly, even when they’re wrong."],
@@ -261,10 +269,16 @@ dialog p{color:var(--muted);margin:0 0 28px}
       ["Handing in an essay written by AI as your own work is fine if nobody notices.", "It’s dishonest, and you miss the learning the task was for. Use AI to help you think, not to think for you."],
       ["AI can explain a hard topic in a different way if you didn’t understand it in class.", "Ask it to explain simply or give an example, then check with your teacher."],
       ["It’s safe to share a password with an AI because it isn’t a real person.", "Passwords should never be shared with anyone or anything, AI included."],
-      ["Everything AI tells you is up to date with today’s news.", "Many AI tools only learned from information up to a certain date, so recent events may be missing or wrong."]
+      ["Everything AI tells you is up to date with today’s news.", "Many AI tools only learned from information up to a certain date, so recent events may be missing or wrong."],
+      /* harder: always the last five */
+      ["If two different AI chatbots give you the same answer, it must be true.", "They learn from similar text and can make the same mistake. Check with a source that isn’t AI."],
+      ["Leaving your name out of a story about yourself always makes it safe to share with AI.", "Details like your school, your street or a photo can still identify you."],
+      ["Asking an AI “Are you sure?” is a reliable way to find out whether its answer is correct.", "AI tends to go along with you, so it may change a right answer or defend a wrong one. Check another source instead."],
+      ["An AI can give a different answer if you ask it the exact same question again.", "It writes its answer fresh each time, so answers can vary. Another reason to check important facts."],
+      ["Using AI to check your work after you’ve solved a problem yourself can help you learn.", "You do the thinking first, then use AI to spot mistakes. Just remember the AI can be wrong too."]
     ]
   };
-  var K = { teacher:"VFRGVEZURkZURlRGVEZU", student:"RkZURlRGVEZURlRGVEZU" };
+  var K = { teacher:"RlRGVEZUVEZURlRGRlRGVEZURlQ=", student:"VFRGRkZGRlRGVEZURlRGVEZURlQ=" };
   function key(role){ return atob(K[role]).split("").reverse().join(""); }
 
   var ICON = {
@@ -360,7 +374,8 @@ dialog p{color:var(--muted);margin:0 0 28px}
       countdown(function(){
         state = {
           role: role, name: name.value.trim(), cls: role === "student" ? cls.value.trim() : "",
-          order: shuffle(SETS[role].map(function(_, i){ return i; })),
+          order: shuffle(SETS[role].slice(0, BASIC).map(function(_, i){ return i; }))
+            .concat(shuffle(SETS[role].slice(BASIC).map(function(_, i){ return BASIC + i; }))),
           answers: SETS[role].map(function(){ return null; }),
           current: 0, startedAt: Date.now(), finishedAt: null
         };
@@ -370,7 +385,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
 
     var left = el("div", null, [
       el("h1", {text:"How fluent are you with AI?"}),
-      el("p", {class:"sub", html:"Fifteen statements, five minutes. Decide whether each one is true or false. <strong>The highest score becomes your school’s AI ambassador</strong>, and if scores tie, the faster time wins."})
+      el("p", {class:"sub", html:"Twenty statements, three minutes. Decide whether each one is true or false, and keep something in reserve: the last five are harder. <strong>The highest score becomes your school’s AI ambassador</strong>, and if scores tie, the faster time wins."})
     ]);
     var right = el("div", {class:"card"}, [
       el("p", {class:"step"}, [el("span", {class:"n", text:"1"}), "Who’s taking the quiz?"]),
@@ -417,7 +432,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
         [el("span", {text:label}), el("kbd", {"aria-hidden":"true", text:v})]);
     };
     var wrap = el("section", {class:"quiz"}, [
-      el("div", {class:"counter"}, [el("b", {text:pad2(i+1)}), el("span", {text:"of " + n})]),
+      el("div", {class:"counter"}, [el("b", {text:pad2(i+1)}), el("span", {text:"of " + n}), state.order[i] >= BASIC ? el("span", {class:"tough", text:"Harder"}) : null]),
       el("p", {class:"statement", id:"stmt", text:q[0]}),
       el("div", {class:"answers"}, [ansBtn("T","True"), ansBtn("F","False")])
     ]);
@@ -509,7 +524,7 @@ dialog p{color:var(--muted);margin:0 0 28px}
       list.appendChild(el("li", null, [
         el("span", {class:"badge " + st, "aria-label": st === "ok" ? "Correct" : st === "no" ? "Incorrect" : "Not answered", text: st === "ok" ? "✓" : st === "no" ? "✕" : "–"}),
         el("div", null, [
-          el("p", {class:"s", text: set[idx][0]}),
+          el("p", {class:"s"}, [set[idx][0], idx >= BASIC ? el("span", {class:"tough sm", text:"Harder"}) : null]),
           el("p", {class:"a", html:""}, [el("b", {text: (r === "T" ? "True." : "False.") + " "}), set[idx][1]])
         ])
       ]));
