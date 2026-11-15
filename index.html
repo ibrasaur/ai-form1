@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Fluency Quiz</title>
+<meta name="description" content="A five-minute true-or-false quiz on using AI well and safely, for teachers and students.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='black'/><circle cx='32' cy='32' r='12' fill='%23c6ff3d'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lime:#c6ff3d; --on-lime:#000;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --serif:"Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans:"Geist", "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#000; --fg:#fff; --muted:rgba(255,255,255,.56); --faint:rgba(255,255,255,.34);
+  --line:rgba(255,255,255,.14); --line-strong:rgba(255,255,255,.32); --surface:rgba(255,255,255,.045);
+  --accent-text:var(--lime); --ring:var(--lime); color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#fff; --fg:#000; --muted:rgba(0,0,0,.56); --faint:rgba(0,0,0,.36);
+  --line:rgba(0,0,0,.12); --line-strong:rgba(0,0,0,.3); --surface:rgba(0,0,0,.03);
+  --accent-text:#3d6a00; --ring:#000; color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg); color:var(--fg); font-family:var(--sans); font-size:17px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; transition:background .4s var(--ease), color .4s var(--ease);
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+}
+::selection{background:var(--lime);color:var(--on-lime)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lime);outline-offset:4px;border-radius:10px}
+
+/* top progress line */
+.rail{position:fixed;inset:0 0 auto;height:3px;z-index:20;pointer-events:none}
+.rail i{display:block;height:100%;width:0;background:var(--lime);transition:width .5s var(--ease)}
+
+/* header */
+header{max-width:1040px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;gap:14px}
+.mark{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em;font-size:15px}
+.mark .dot{width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px color-mix(in srgb, var(--lime) 22%, transparent)}
+.spacer{flex:1}
+.timer{font-variant-numeric:tabular-nums;font-weight:500;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;
+  border:1px solid var(--line);border-radius:99px;padding:6px 14px 6px 10px}
+.timer svg{width:18px;height:18px;transform:rotate(-90deg)}
+.timer .bgc{stroke:var(--line)} .timer .fgc{stroke:var(--fg);transition:stroke-dashoffset .25s linear}
+.timer.low{border-color:var(--lime);color:var(--accent-text)} .timer.low .fgc{stroke:var(--lime)}
+.timer.critical{animation:pulse 1s var(--ease) infinite}
+@keyframes pulse{50%{opacity:.45}}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--muted);transition:color .2s,border-color .2s}
+.icon-btn:hover{color:var(--fg);border-color:var(--line-strong)}
+.icon-btn svg{width:17px;height:17px}
+
+main{max-width:1040px;margin:0 auto;padding:12px 28px 80px}
+.view{animation:enter .6s var(--ease) both}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* start */
+.start{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start;padding-top:36px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(52px,8.4vw,104px);line-height:.94;letter-spacing:-.02em;margin:0 0 28px;text-wrap:balance}
+.sub{font-size:18px;color:var(--muted);max-width:28em;margin:0 0 36px}
+.sub strong{color:var(--fg);font-weight:500}
+.facts{display:flex;gap:36px;padding-top:26px;border-top:1px solid var(--line);max-width:30em}
+.fact b{display:block;font-family:var(--serif);font-weight:400;font-size:38px;line-height:1}
+.fact span{font-size:13px;color:var(--muted)}
+.card{border:1px solid var(--line);border-radius:28px;padding:30px;background:var(--surface)}
+.step{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;font-weight:500;font-size:15px}
+.step .n{font-family:var(--serif);font-size:20px;color:var(--accent-text)}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.role{position:relative;display:block;cursor:pointer}
+.role input{position:absolute;opacity:0;pointer-events:none}
+.role .box{display:block;border:1px solid var(--line);border-radius:18px;padding:16px 16px 18px;transition:border-color .2s,background .2s;height:100%}
+.role .t{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin-bottom:4px}
+.role .t i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line-strong);transition:all .2s var(--ease);flex:none}
+.role .d{font-size:13.5px;color:var(--muted);line-height:1.45;display:block}
+.role:hover .box{border-color:var(--line-strong)}
+.role input:checked + .box{border-color:var(--lime);background:color-mix(in srgb, var(--lime) 8%, transparent)}
+.role input:checked + .box .t i{border-color:var(--lime);background:var(--lime);box-shadow:inset 0 0 0 4px var(--bg)}
+.role input:focus-visible + .box{outline:2px solid var(--lime);outline-offset:3px}
+.field{position:relative;margin-bottom:12px}
+.field input{width:100%;font:inherit;font-size:17px;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:16px;padding:24px 16px 10px;transition:border-color .2s}
+.field label{position:absolute;left:17px;top:17px;font-size:16px;color:var(--muted);pointer-events:none;transition:all .2s var(--ease)}
+.field input::placeholder{color:transparent;transition:color .2s}
+.field input:focus{outline:none;border-color:var(--fg)}
+.field input:focus::placeholder{color:var(--faint)}
+.field input:focus + label,.field input:not(:placeholder-shown) + label{top:8px;font-size:12px}
+.collapse{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
+.collapse.open{grid-template-rows:1fr}
+.collapse > div{overflow:hidden}
+.hint{font-size:13px;color:var(--muted);margin:2px 2px 26px;display:flex;gap:8px;align-items:center}
+.hint svg{width:14px;height:14px;flex:none}
+.cta{width:100%;border:0;border-radius:99px;padding:18px 24px;font-weight:600;font-size:16px;cursor:pointer;background:var(--lime);color:var(--on-lime);
+  transition:transform .2s var(--ease),opacity .2s,box-shadow .3s}
+.cta:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 30px -10px color-mix(in srgb, var(--lime) 70%, transparent)}
+.cta:disabled{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);cursor:not-allowed}
+.rules{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px;font-size:13.5px;color:var(--muted)}
+.rules li{display:flex;gap:10px;align-items:center}
+kbd{font-family:var(--sans);font-size:12px;font-weight:600;min-width:22px;height:22px;display:inline-grid;place-items:center;border:1px solid var(--line-strong);border-radius:6px;padding:0 5px;color:var(--fg)}
+.rules .ic{width:22px;display:grid;place-items:center;color:var(--fg)}
+.rules svg{width:15px;height:15px}
+
+/* countdown */
+.count{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);z-index:30}
+.count b{font-family:var(--serif);font-weight:400;font-size:min(46vw,340px);line-height:1;animation:beat 1s var(--ease) both}
+.count b.go{color:var(--lime);font-style:italic;font-size:min(24vw,180px)}
+.count p{position:absolute;bottom:12vh;margin:0;color:var(--muted);font-size:15px}
+@keyframes beat{0%{opacity:0;transform:scale(1.18)}25%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(.94)}}
+
+/* quiz */
+.quiz{min-height:calc(100vh - 170px);display:flex;flex-direction:column;justify-content:center;max-width:860px;margin:0 auto;padding-top:20px}
+.counter{display:flex;align-items:baseline;gap:6px;margin-bottom:28px;color:var(--muted);font-size:14px}
+.counter b{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--fg);line-height:1}
+.statement{text-wrap:pretty;font-family:var(--serif);font-weight:400;font-size:clamp(34px,5.2vw,62px);line-height:1.08;letter-spacing:-.01em;margin:0 0 56px;min-height:3.3em}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ans{position:relative;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+  border:1px solid var(--line-strong);background:transparent;border-radius:24px;padding:28px 28px;font-size:22px;font-weight:500;
+  transition:background .2s var(--ease),color .2s,border-color .2s,transform .15s var(--ease)}
+.ans kbd{transition:border-color .2s,color .2s}
+.ans:hover{border-color:var(--fg)}
+.ans:active{transform:scale(.985)}
+.ans.picked{background:var(--lime);border-color:var(--lime);color:var(--on-lime)}
+.ans.picked kbd{border-color:rgba(0,0,0,.3);color:var(--on-lime)}
+.swap{animation:swap .45s var(--ease) both}
+@keyframes swap{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* time up */
+.timeup{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);z-index:30;text-align:center}
+.timeup h2{font-family:var(--serif);font-weight:400;font-size:clamp(60px,12vw,140px);margin:0;line-height:1}
+.timeup p{color:var(--muted);margin:14px 0 0}
+
+/* result */
+.result{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center;padding-top:30px}
+.ring{position:relative;width:min(340px,70vw);aspect-ratio:1}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bgc{stroke:var(--line)} .ring .fgc{stroke:var(--ring);stroke-linecap:round;transition:stroke-dashoffset 1.6s var(--ease)}
+.ring .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .num b{display:block;font-family:var(--serif);font-weight:400;font-size:min(36vw,150px);line-height:.9;font-variant-numeric:tabular-nums}
+.ring .num span{display:block;font-size:14px;color:var(--muted);margin-top:6px}
+.verdict{font-family:var(--serif);font-size:clamp(44px,6vw,72px);line-height:1;margin:0 0 16px;font-weight:400}
+.person{font-size:20px;font-weight:500;margin:0}
+.person-meta{color:var(--muted);margin:2px 0 26px}
+.stats{display:flex;gap:40px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px}
+.stats b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--muted)}
+.notice{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--muted);margin:0}
+.notice i{width:8px;height:8px;border-radius:50%;background:var(--lime);margin-top:8px;flex:none;animation:pulse 2s var(--ease) infinite}
+
+.review{margin-top:64px;border-top:1px solid var(--line)}
+.review-head{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;padding:26px 0;cursor:pointer;text-align:left}
+.review-head h3{font-family:var(--serif);font-weight:400;font-size:34px;margin:0}
+.review-head .chev{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .35s var(--ease)}
+.review-head[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.review-head .chev svg{width:16px;height:16px}
+.review-list{list-style:none;margin:0;padding:0}
+.review-list li{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--line)}
+.badge{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:15px;font-weight:600}
+.badge.ok{background:var(--lime);color:var(--on-lime)}
+.badge.no{border:1px solid var(--line-strong);color:var(--fg)}
+.badge.none{border:1px dashed var(--line-strong);color:var(--muted)}
+.review-list .s{font-size:17px;margin:2px 0 6px}
+.review-list .a{font-size:14.5px;color:var(--muted);margin:0}
+.review-list .a b{color:var(--fg);font-weight:500}
+.foot{display:flex;justify-content:center;margin-top:56px}
+.ghost{border:1px solid var(--line-strong);background:transparent;border-radius:99px;padding:14px 26px;cursor:pointer;font-weight:500;transition:border-color .2s,background .2s}
+.ghost:hover{border-color:var(--fg)}
+
+/* dialog */
+dialog{border:1px solid var(--line);border-radius:28px;padding:34px;max-width:420px;width:calc(100% - 40px);background:var(--bg);color:var(--fg)}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(6px)}
+dialog[open]{animation:enter .35s var(--ease)}
+dialog h2{font-family:var(--serif);font-weight:400;font-size:36px;line-height:1.05;margin:0 0 10px}
+dialog p{color:var(--muted);margin:0 0 28px}
+.dlg-actions{display:flex;gap:10px;flex-wrap:wrap}
+.dlg-actions .cta{width:auto;flex:1;padding:14px 20px}
+.dlg-actions .ghost{flex:1}
+
+@media (max-width:860px){
+  .start{grid-template-columns:1fr;gap:40px;padding-top:12px}
+  .result{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center}
+  .result .stats{justify-content:center}
+  .notice{justify-content:center;text-align:left}
+}
+@media (max-width:560px){
+  header{padding:16px 18px} main{padding:8px 18px 64px}
+  .card{padding:22px;border-radius:24px}
+  .roles{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr}
+  .ans{padding:22px 24px}
+  .statement{margin-bottom:36px;min-height:0}
+  .facts{gap:26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="rail" aria-hidden="true"><i id="rail"></i></div>
+<header>
+  <div class="mark"><span class="dot" aria-hidden="true"></span>AI Fluency</div>
+  <div class="spacer"></div>
+  <div class="timer" id="timer" hidden role="timer" aria-label="Time remaining">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><circle class="bgc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4"/><circle class="fgc" id="timerArc" cx="10" cy="10" r="8" fill="none" stroke-width="2.4" stroke-dasharray="50.27" stroke-dashoffset="0"/></svg>
+    <span id="timerText">5:00</span>
+  </div>
+  <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch to light mode"></button>
+</header>
+<main id="app" aria-live="polite"></main>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <h2 id="dlgTitle">Ready for the next person?</h2>
+  <p>This clears the result on this screen. Make sure your facilitator has seen the score first.</p>
+  <div class="dlg-actions">
+    <button class="ghost" type="button" id="dlgKeep">Keep this result</button>
+    <button class="cta" type="button" id="dlgClear">Clear and restart</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+  var DURATION = 300, STORE = "aiFluencyQuiz.attempt.v2", THEME = "aiFluencyQuiz.theme";
+
+  var SETS = {
+    teacher: [
+      ["Generative AI tools like ChatGPT work mainly by predicting the next word, based on patterns in their training data.", "That’s why they can sound fluent and still be wrong: they generate likely text rather than checking facts."],
+      ["If an AI gives an answer confidently, it has checked that the answer is correct.", "Confidence is just the style of the text. AI sounds equally sure when it’s wrong, so verify facts yourself."],
+      ["AI tools can invent quotes, statistics or references that look completely real.", "This is called hallucination. Always check citations and numbers before using them."],
+      ["If you tell an AI its correct answer is wrong, it will always stand by the correct answer.", "AI tends to agree with the user (sycophancy) and may back down from a correct answer."],
+      ["NotebookLM answers questions using the documents you upload to it.", "It grounds its answers in your sources and shows citations, which makes them easier to check."],
+      ["It’s fine to paste a student’s essay with their full name into a free AI tool, as long as it’s for feedback.", "Remove every identifying detail first. Assume anything you type may be stored."],
+      ["A strong prompt can include a role, a task, context, a format and constraints.", "Role, Task, Context, Format, Constraint: the more the AI knows, the more useful the result."],
+      ["Every prompt needs all five parts to work.", "A quick question often works fine. Use the full structure for bigger or more important tasks."],
+      ["Building relationships with students can be fully handed over to AI.", "Some work should always stay human, and relationships are at the top of that list."],
+      ["Drafting a classroom newsletter is a reasonable task to hand to AI, with a quick read before sending.", "Low risk and low impact: a good fit for AI, with your final check."],
+      ["AI detectors can reliably prove whether a student used AI.", "Detectors make mistakes in both directions. Design tasks that show the process instead: drafts, in-class work, oral explanation."],
+      ["The E in the CHECK method asks whether the output is free of bias and cultural assumptions.", "Correct, Human, Equitable, Curriculum-aligned, Kid-safe."],
+      ["AI knows your students, your curriculum and your community.", "You are the expert. AI only knows what you tell it, so give it context and judge the result."],
+      ["When AI helped you make a resource, it’s good practice to say so.", "Disclosing AI use is part of diligence: you take responsibility for what you share."],
+      ["Perplexity shows sources with its answers, but you should still open and check them.", "Sources make checking easier, but a source can be misread or unreliable."]
+    ],
+    student: [
+      ["AI chatbots work by predicting the next word, based on patterns in huge amounts of text.", "That’s how they write so smoothly, even when they’re wrong."],
+      ["AI understands what it says in the same way a person does.", "It produces likely text from patterns. It doesn’t understand or experience things the way you do."],
+      ["AI can sometimes make up facts that sound completely true.", "This is called hallucination. Check important facts in a textbook or a trusted website."],
+      ["If an AI sounds very sure, its answer must be correct.", "AI sounds just as confident when it’s wrong."],
+      ["AI might agree with you even when you’re wrong.", "AI tends to go along with the user, so don’t use it to prove you’re right."],
+      ["It’s fine to tell an AI chatbot your home address and phone number.", "Never share personal information like your address, phone number, passwords or photos of people."],
+      ["Asking AI to quiz you before a test is a good way to use it for learning.", "It helps you practise and find gaps, and you still do the thinking."],
+      ["Copying AI’s answers into your homework helps you learn the topic.", "If AI does the thinking, you don’t learn it, and the test will show that."],
+      ["Giving AI more detail about what you want usually gets you a better answer.", "Say who it’s for, what you need and how it should look."],
+      ["AI knows exactly what your teacher taught in class this week.", "It doesn’t know your class, so its answers may not match what you’re learning."],
+      ["You can check an AI’s facts using a textbook or a trusted website.", "Checking with another source is one of the most useful habits you can build."],
+      ["Handing in an essay written by AI as your own work is fine if nobody notices.", "It’s dishonest, and you miss the learning the task was for. Use AI to help you think, not to think for you."],
+      ["AI can explain a hard topic in a different way if you didn’t understand it in class.", "Ask it to explain simply or give an example, then check with your teacher."],
+      ["It’s safe to share a password with an AI because it isn’t a real person.", "Passwords should never be shared with anyone or anything, AI included."],
+      ["Everything AI tells you is up to date with today’s news.", "Many AI tools only learned from information up to a certain date, so recent events may be missing or wrong."]
+    ]
+  };
+  var K = { teacher:"VFRGVEZURkZURlRGVEZU", student:"RkZURlRGVEZURlRGVEZU" };
+  function key(role){ return atob(K[role]).split("").reverse().join(""); }
+
+  var ICON = {
+    sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+    moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>',
+    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+    arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    keys:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6.5 10h.01M10 10h.01M14 10h.01M17.5 10h.01M7.5 14h9"/></svg>',
+    chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'
+  };
+
+  var $ = function(id){ return document.getElementById(id); };
+  var app = $("app"), timer = $("timer"), timerText = $("timerText"), timerArc = $("timerArc"), rail = $("rail");
+  var state = null, ticker = null, locked = false;
+
+  /* ---------- storage ---------- */
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+  function save(){ set(STORE, JSON.stringify(state)); }
+  function load(){ try{ return JSON.parse(get(STORE)); }catch(e){ return null; } }
+
+  /* ---------- theme ---------- */
+  function applyTheme(t){
+    document.documentElement.setAttribute("data-theme", t);
+    var b = $("themeBtn");
+    b.innerHTML = t === "dark" ? ICON.sun : ICON.moon;
+    b.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  }
+  applyTheme(get(THEME) === "light" ? "light" : "dark");
+  $("themeBtn").addEventListener("click", function(){
+    var t = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(t); set(THEME, t);
+  });
+
+  /* ---------- helpers ---------- */
+  function el(tag, attrs, kids){
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs){
+      var v = attrs[k];
+      if (k === "text") n.textContent = v;
+      else if (k === "html") n.innerHTML = v;
+      else if (k.slice(0,2) === "on") n.addEventListener(k.slice(2), v);
+      else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function(c){ if (c != null) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function view(node){ app.innerHTML = ""; node.classList.add("view"); app.appendChild(node); window.scrollTo(0,0); }
+  function mmss(sec){ sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec/60) + ":" + String(sec%60).padStart(2,"0"); }
+  function taken(ms){ var s = Math.round(ms/1000); return Math.floor(s/60) + ":" + String(s%60).padStart(2,"0"); }
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function remaining(){ return DURATION - (Date.now() - state.startedAt)/1000; }
+  function setRail(p){ rail.style.width = (p*100) + "%"; }
+  function pad2(n){ return String(n).padStart(2,"0"); }
+
+  /* ---------- start ---------- */
+  function renderStart(){
+    stopTicker(); timer.hidden = true; setRail(0);
+    var role = null;
+
+    function roleCard(val, title, desc){
+      return el("label", {class:"role"}, [
+        el("input", {type:"radio", name:"role", value:val, onchange:function(){ pick(val); }}),
+        el("span", {class:"box"}, [
+          el("span", {class:"t"}, [title, el("i", {"aria-hidden":"true"})]),
+          el("span", {class:"d", text:desc})
+        ])
+      ]);
+    }
+    var name = el("input", {type:"text", id:"name", autocomplete:"off", autocapitalize:"words", spellcheck:"false", maxlength:"30", placeholder:"e.g. Ayesha"});
+    var cls = el("input", {type:"text", id:"cls", autocomplete:"off", spellcheck:"false", maxlength:"24", placeholder:"e.g. Grade 8, Section B"});
+    var clsWrap = el("div", {class:"collapse"}, [el("div", null, [
+      el("div", {class:"field"}, [cls, el("label", {for:"cls", text:"Your class"})])
+    ])]);
+    var go = el("button", {class:"cta", type:"button", disabled:true, text:"Choose teacher or student", onclick:begin});
+
+    function valid(){ return role && name.value.trim() && (role === "teacher" || cls.value.trim()); }
+    function check(){
+      go.disabled = !valid();
+      go.textContent = !role ? "Choose teacher or student" : !name.value.trim() ? "Add your first name"
+        : (role === "student" && !cls.value.trim()) ? "Add your class" : "Start the quiz";
+    }
+    function pick(r){ role = r; clsWrap.classList.toggle("open", r === "student"); check(); if (!name.value) name.focus(); }
+    [name, cls].forEach(function(i){
+      i.addEventListener("input", check);
+      i.addEventListener("keydown", function(e){ if (e.key === "Enter" && valid()) begin(); });
+    });
+
+    function begin(){
+      if (!valid()) return;
+      countdown(function(){
+        state = {
+          role: role, name: name.value.trim(), cls: role === "student" ? cls.value.trim() : "",
+          order: shuffle(SETS[role].map(function(_, i){ return i; })),
+          answers: SETS[role].map(function(){ return null; }),
+          current: 0, startedAt: Date.now(), finishedAt: null
+        };
+        save(); renderQuestion(true); startTicker();
+      });
+    }
+
+    var left = el("div", null, [
+      el("h1", {text:"How fluent are you with AI?"}),
+      el("p", {class:"sub", html:"Fifteen statements, five minutes. Decide whether each one is true or false. <strong>The highest score becomes your school’s AI ambassador</strong>, and if scores tie, the faster time wins."})
+    ]);
+    var right = el("div", {class:"card"}, [
+      el("p", {class:"step"}, [el("span", {class:"n", text:"1"}), "Who’s taking the quiz?"]),
+      el("div", {class:"roles", role:"radiogroup", "aria-label":"I am a"}, [
+        roleCard("teacher", "Teacher", "Questions about AI in your classroom and your planning."),
+        roleCard("student", "Student", "Questions about using AI to learn, safely and honestly.")
+      ]),
+      el("p", {class:"step"}, [el("span", {class:"n", text:"2"}), "Tell us who you are"]),
+      el("div", {class:"field"}, [name, el("label", {for:"name", text:"First name"})]),
+      clsWrap,
+      el("p", {class:"hint", html: ICON.lock + "<span>First name only. Nothing you type leaves this screen.</span>"}),
+      go,
+      el("ul", {class:"rules"}, [
+        el("li", {html:'<span class="ic">'+ICON.arrow+'</span>No going back, so read each statement carefully.'}),
+        el("li", {html:'<span class="ic">'+ICON.keys+'</span><span>Tap an answer, or press <kbd>T</kbd> or <kbd>F</kbd> on the keyboard.</span>'}),
+        el("li", {html:'<span class="ic">'+ICON.clock+'</span>It ends after the last statement or when time runs out.'})
+      ])
+    ]);
+    view(el("section", {class:"start"}, [left, right]));
+  }
+
+  /* ---------- countdown ---------- */
+  function countdown(done){
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce){ done(); return; }
+    var overlay = el("div", {class:"count", "aria-live":"assertive"});
+    document.body.appendChild(overlay);
+    var seq = ["3","2","1","Go"], i = 0;
+    (function next(){
+      if (i >= seq.length){ overlay.remove(); done(); return; }
+      overlay.innerHTML = "";
+      overlay.appendChild(el("b", {class: seq[i] === "Go" ? "go" : "", text: seq[i]}));
+      overlay.appendChild(el("p", {text:"The timer starts now. Good luck."}));
+      i++; setTimeout(next, seq[i-1] === "Go" ? 650 : 850);
+    })();
+  }
+
+  /* ---------- quiz ---------- */
+  function renderQuestion(first){
+    var set = SETS[state.role], n = set.length, i = state.current, q = set[state.order[i]];
+    timer.hidden = false; updateTimer(); setRail(i/n);
+    var ansBtn = function(v, label){
+      return el("button", {class:"ans", type:"button", "data-v":v, onclick:function(e){ answer(v, e.currentTarget); }},
+        [el("span", {text:label}), el("kbd", {"aria-hidden":"true", text:v})]);
+    };
+    var wrap = el("section", {class:"quiz"}, [
+      el("div", {class:"counter"}, [el("b", {text:pad2(i+1)}), el("span", {text:"of " + n})]),
+      el("p", {class:"statement", id:"stmt", text:q[0]}),
+      el("div", {class:"answers"}, [ansBtn("T","True"), ansBtn("F","False")])
+    ]);
+    if (first) view(wrap);
+    else { app.innerHTML = ""; wrap.classList.add("swap"); app.appendChild(wrap); }
+  }
+  function answer(v, btn){
+    if (!state || state.finishedAt || locked) return;
+    locked = true;
+    if (btn) btn.classList.add("picked");
+    state.answers[state.order[state.current]] = v;
+    state.current++; save();
+    setRail(state.current / SETS[state.role].length);
+    setTimeout(function(){
+      locked = false;
+      if (state.current >= SETS[state.role].length) finish(false); else renderQuestion(false);
+    }, 260);
+  }
+  document.addEventListener("keydown", function(e){
+    if (!state || state.finishedAt || /INPUT|TEXTAREA/.test(e.target.tagName) || $("dlg").open) return;
+    var k = e.key.toLowerCase();
+    if (k === "t" || k === "f") answer(k.toUpperCase(), document.querySelector('.ans[data-v="'+k.toUpperCase()+'"]'));
+  });
+
+  function updateTimer(){
+    var r = remaining(), c = 50.27;
+    timerText.textContent = mmss(r);
+    timerArc.setAttribute("stroke-dashoffset", String(c * (1 - Math.max(0, r)/DURATION)));
+    timer.classList.toggle("low", r <= 60);
+    timer.classList.toggle("critical", r <= 10);
+  }
+  function startTicker(){ stopTicker(); ticker = setInterval(function(){
+    if (!state || state.finishedAt) return stopTicker();
+    if (remaining() <= 0) finish(true); else updateTimer();
+  }, 250); }
+  function stopTicker(){ if (ticker){ clearInterval(ticker); ticker = null; } }
+
+  function finish(timeUp){
+    stopTicker();
+    state.finishedAt = Math.min(Date.now(), state.startedAt + DURATION*1000);
+    save(); timer.hidden = true; setRail(1);
+    if (timeUp){
+      var o = el("div", {class:"timeup", role:"alert"}, [el("div", null, [el("h2", {text:"Time’s up."}), el("p", {text:"Let’s see how you did."})])]);
+      document.body.appendChild(o);
+      setTimeout(function(){ o.remove(); renderResult(true); }, 1600);
+    } else renderResult(true);
+  }
+
+  /* ---------- result ---------- */
+  function verdict(s, n){
+    if (s === n) return "Flawless.";
+    if (s >= n - 3) return "Excellent.";
+    if (s >= n - 6) return "Solid foundations.";
+    if (s >= n - 9) return "A good start.";
+    return "Plenty to explore.";
+  }
+  function renderResult(animate){
+    timer.hidden = true; setRail(1);
+    var set = SETS[state.role], ans = key(state.role), n = set.length, score = 0;
+    set.forEach(function(_, i){ if (state.answers[i] === ans[i]) score++; });
+    var answered = state.answers.filter(function(a){ return a !== null; }).length;
+    var ms = state.finishedAt - state.startedAt, ranOut = ms >= DURATION*1000;
+    var C = 2 * Math.PI * 92;
+
+    var ring = el("div", {class:"ring", role:"img", "aria-label": score + " out of " + n + " correct"});
+    ring.innerHTML = '<svg viewBox="0 0 200 200"><circle class="bgc" cx="100" cy="100" r="92" fill="none" stroke-width="3"/>' +
+      '<circle class="fgc" cx="100" cy="100" r="92" fill="none" stroke-width="5" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'"/></svg>';
+    var num = el("b", {text: animate ? "0" : String(score)});
+    ring.appendChild(el("div", {class:"num"}, [el("div", null, [num, el("span", {text:"out of " + n})])]));
+
+    var who = state.role === "teacher" ? "Teacher" : "Student" + (state.cls ? ", " + state.cls : "");
+
+    var info = el("div", null, [
+      el("p", {class:"verdict", text: verdict(score, n)}),
+      el("p", {class:"person", text: state.name}),
+      el("p", {class:"person-meta", text: who}),
+      el("div", {class:"stats"}, [
+        el("div", null, [el("b", {text: taken(ms)}), el("span", {text: ranOut ? "time ran out" : "time taken"})]),
+        el("div", null, [el("b", {text: answered + "/" + n}), el("span", {text:"answered"})]),
+        el("div", null, [el("b", {text: Math.round(score/n*100) + "%"}), el("span", {text:"accuracy"})])
+      ]),
+      el("p", {class:"notice"}, [el("i"), el("span", {text:"Keep this screen open. Your facilitator will come round to record scores."})])
+    ]);
+
+    var list = el("ol", {class:"review-list", id:"reviewList", hidden:true});
+    state.order.forEach(function(idx, k){
+      var g = state.answers[idx], r = ans[idx];
+      var st = g === null ? "none" : g === r ? "ok" : "no";
+      list.appendChild(el("li", null, [
+        el("span", {class:"badge " + st, "aria-label": st === "ok" ? "Correct" : st === "no" ? "Incorrect" : "Not answered", text: st === "ok" ? "✓" : st === "no" ? "✕" : "–"}),
+        el("div", null, [
+          el("p", {class:"s", text: set[idx][0]}),
+          el("p", {class:"a", html:""}, [el("b", {text: (r === "T" ? "True." : "False.") + " "}), set[idx][1]])
+        ])
+      ]));
+    });
+    var toggle = el("button", {class:"review-head", type:"button", "aria-expanded":"false", "aria-controls":"reviewList", onclick:function(){
+      var open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open)); list.hidden = open;
+    }}, [el("h3", {text:"Review your answers"}), el("span", {class:"chev", html:ICON.chev})]);
+
+    view(el("section", null, [
+      el("div", {class:"result"}, [ring, info]),
+      el("div", {class:"review"}, [toggle, list]),
+      el("div", {class:"foot"}, [el("button", {class:"ghost", type:"button", text:"Next person", onclick:function(){ $("dlg").showModal(); }})])
+    ]));
+
+    var arc = ring.querySelector(".fgc"), target = C * (1 - score/n);
+    if (animate && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)){
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ arc.style.strokeDashoffset = target; }); });
+      var t0 = performance.now(), dur = 1400;
+      (function step(t){ var p = Math.min(1, (t - t0)/dur), e = 1 - Math.pow(1 - p, 3);
+        num.textContent = String(Math.round(score * e)); if (p < 1) requestAnimationFrame(step); })(t0);
+    } else { arc.style.strokeDashoffset = target; num.textContent = String(score); }
+  }
+
+  /* ---------- dialog ---------- */
+  $("dlgKeep").addEventListener("click", function(){ $("dlg").close(); });
+  $("dlgClear").addEventListener("click", function(){ $("dlg").close(); del(STORE); state = null; renderStart(); });
+
+  /* ---------- boot ---------- */
+  state = load();
+  if (state && SETS[state.role] && Array.isArray(state.answers)){
+    if (state.finishedAt) renderResult(false);
+    else if (remaining() <= 0) finish(false);
+    else { renderQuestion(true); startTicker(); }
+  } else { state = null; renderStart(); }
+})();
+</script>
+</body>
+</html>
